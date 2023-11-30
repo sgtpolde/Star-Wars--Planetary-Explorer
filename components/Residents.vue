@@ -4,17 +4,16 @@
     <Loading v-if="loading" />
 
     <!-- Display list of residents -->
-    <ul v-else-if="!selectedResident" class="">
+    <ul v-else-if="!selectedResident" class="space-y-2">
       <li
         v-for="(resident, index) in residentsWithDetails"
         :key="index"
-        class="bg-gray-800 p-2 rounded-lg"
+        class="bg-gray-800 p-4 rounded-lg hover:bg-gray-700 cursor-pointer"
+        @click="selectResident(index)"
       >
         <!-- Destructure resident object for cleaner template -->
         <div class="flex items-center">
-          <span
-            @click="selectResident(index)"
-            class="cursor-pointer text-white hover:underline"
+          <span class="text-white"
             >{{ index + 1 }}. {{ resident.details.name }}</span
           >
         </div>
@@ -23,75 +22,60 @@
 
     <!-- Display details for the selected resident -->
     <div v-else class="bg-gray-800 p-4 rounded-lg">
-      <h3 class="text-2xl font-bold mb-4 text-yellow-500">
+      <h3 class="text-xl md:text-2xl font-bold mb-4 text-yellow-500">
         Resident Details | {{ selectedResident.details.name }}
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4">
         <div>
           <p>
             <span class="font-semibold text-yellow-500">Name:</span>
             {{ selectedResident.details.name }}
           </p>
+          <!-- Add other properties as needed -->
+        </div>
+        <div>
           <p>
             <span class="font-semibold text-yellow-500">Height:</span>
             {{ selectedResident.details.height }}
-          </p>
-          <p>
-            <span class="font-semibold text-yellow-500">Mass:</span>
-            {{ selectedResident.details.mass }}
-          </p>
-          <p>
-            <span class="font-semibold text-yellow-500">Gender:</span>
-            {{ selectedResident.details.gender }}
-          </p>
-          <p>
-            <span class="font-semibold text-yellow-500">Hair Color:</span>
-            {{ selectedResident.details.hair_color }}
-          </p>
-        </div>
-        <div>
-          <p>
-            <span class="font-semibold text-yellow-500">Skin Color:</span>
-            {{ selectedResident.details.skin_color }}
-          </p>
-          <p>
-            <span class="font-semibold text-yellow-500">Eye Color:</span>
-            {{ selectedResident.details.eye_color }}
-          </p>
-          <p>
-            <span class="font-semibold text-yellow-500">Birth Year:</span>
-            {{ selectedResident.details.birth_year }}
-          </p>
-          <p>
-            <span class="font-semibold text-yellow-500">Homeworld:</span>
-            {{ selectedResident.details.homeworld }}
-          </p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div>
-          <p>
-            <span class="font-semibold text-yellow-500">Species:</span>
-            {{ selectedResident.details.species }}
-          </p>
-          <p>
-            <span class="font-semibold text-yellow-500">Vehicles:</span>
-            {{ selectedResident.details.vehicles }}
-          </p>
-        </div>
-        <div>
-          <p>
-            <span class="font-semibold text-yellow-500">Starships:</span>
-            {{ selectedResident.details.starships }}
           </p>
           <!-- Add other properties as needed -->
         </div>
       </div>
 
+      <div class="grid grid-cols-1 gap-4 mt-4">
+        <div>
+          <p>
+            <span class="font-semibold text-yellow-500">Mass:</span>
+            {{ selectedResident.details.mass }}
+          </p>
+          <!-- Add other properties as needed -->
+        </div>
+        <div>
+          <p>
+            <span class="font-semibold text-yellow-500">Gender:</span>
+            {{ selectedResident.details.gender }}
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 mt-4">
+        <div>
+          <p>
+            <span class="font-semibold text-yellow-500">Homeworld:</span>
+            {{ selectedResident.details.homeworld }}
+          </p>
+        </div>
+        <div>
+          <p>
+            <span class="font-semibold text-yellow-500">Birth Year:</span>
+            {{ selectedResident.details.birth_year }}
+          </p>
+        </div>
+      </div>
+
       <button
         @click="deselectResident"
-        class="mt-4 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full"
+        class="mt-4 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full hover:bg-yellow-400"
       >
         Back to List
       </button>

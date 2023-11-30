@@ -21,7 +21,7 @@
           >
             <div class="p-4">
               <div
-                class="text-yellow-500 text-center hover:text-blue-300 text-lg block mb-2"
+                class="text-green-400 text-center hover:text-blue-300 text-lg block mb-2"
               >
                 🌍 {{ planet.name }}
               </div>
@@ -52,7 +52,7 @@
               :key="page"
               @click="planetsStore.fetchPlanets(page)"
               :class="{
-                'bg-indigo-600': planetsStore.currentPage === page,
+                'bg-green-600': planetsStore.currentPage === page,
                 'text-white': planetsStore.currentPage === page,
                 'text-gray-800': planetsStore.currentPage !== page,
                 'hover:bg-gray-300': planetsStore.currentPage !== page,

@@ -7,9 +7,9 @@
       <p>{{ loadingText }}</p>
       <div class="flex items-center justify-center mt-4">
         <div
-          class="w-80 bg-gray-700 border border-yellow-500 rounded-full h-3 overflow-hidden"
+          class="w-80 bg-gray-700 border border-green-600 rounded-full h-3 overflow-hidden"
         >
-          <div class="bg-yellow-500 h-full animate-progress"></div>
+          <div class="bg-green-400 h-full animate-progress"></div>
         </div>
       </div>
     </div>

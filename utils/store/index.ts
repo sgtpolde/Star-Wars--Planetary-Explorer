@@ -23,7 +23,7 @@ export const useStarWarsStore = defineStore("starWars", {
   state: () => ({
     planets: [] as Planet[],
     selectedPlanet: null as Planet | null,
-    loading: false,
+    loading: true,
     error: null as string | null,
     favorites: [] as any,
     residentDetails: [] as any[],
