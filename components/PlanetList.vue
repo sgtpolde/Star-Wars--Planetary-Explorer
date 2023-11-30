@@ -4,15 +4,25 @@
     <div
       class="bg-black text-white p-8 md:p-12 lg:p-16 min-h-screen grid place-content-center"
     >
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-center">
-        Star Wars Planets
-      </h1>
+      <div class="flex justify-center items-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-center">
+          Star Wars Planets
+        </h1>
+
+        <!-- Toggle Button -->
+        <button
+          @click="toggleDisplayMode"
+          class="text-green-300 ml-3 text-3xl px-2 py-2 mb-5 rounded-full"
+        >
+          {{ displayFavorites ? "★ Favorites" : "☆ All" }}
+        </button>
+      </div>
 
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"
       >
         <nuxt-link
-          v-for="planet in planets"
+          v-for="planet in displayPlanets"
           :key="planet.name"
           :to="`/planet/${planet.name}`"
         >
@@ -79,14 +89,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { useStarWarsStore } from "~/utils/store";
 import Loading from "./Loading.vue";
 
 const planetsStore = useStarWarsStore();
-const planets = computed(() => planetsStore.planets);
+const displayFavorites = ref(false);
 
 onMounted(async () => {
+  await planetsStore.loadFavorites();
   await planetsStore.fetchPlanets(planetsStore.currentPage);
 });
 
@@ -102,5 +113,13 @@ const getVisiblePages = computed(() => {
     { length: endPage - startPage + 1 },
     (_, i) => startPage + i
   );
+});
+
+const toggleDisplayMode = () => {
+  displayFavorites.value = !displayFavorites.value;
+};
+
+const displayPlanets = computed(() => {
+  return displayFavorites.value ? planetsStore.favorites : planetsStore.planets;
 });
 </script>

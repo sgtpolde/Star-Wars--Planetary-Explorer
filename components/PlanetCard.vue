@@ -1,14 +1,22 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-black">
     <div
-      class="bg-gray-900 w-full md:w-3/4 lg:w-1/2 text-white p-4 md:p-8 rounded-lg shadow-lg"
+      class="bg-gray-900 w-full h-3/4 md:w-3/4 lg:w-1/2 text-white p-4 md:p-8 rounded-lg shadow-lg"
     >
-      <h1
-        v-if="planet"
-        class="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-green-400"
-      >
-        {{ planet.name }}
-      </h1>
+      <div class="flex items-center">
+        <h1
+          v-if="planet"
+          class="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-green-400"
+        >
+          {{ planet.name }} -
+        </h1>
+        <button
+          @click="toggleFavorite"
+          class="text-green-300 text-3xl px-2 py-2 mb-5 rounded-full"
+        >
+          {{ isFavorite ? "★" : "☆" }}
+        </button>
+      </div>
 
       <div
         v-if="planet"
@@ -21,6 +29,7 @@
           <h2 class="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-green-400">
             Planet Information
           </h2>
+
           <div class="grid grid-cols-1 gap-2 md:gap-4">
             <div
               v-for="info in planetInfo"
@@ -59,6 +68,8 @@
 </template>
 
 <script setup lang="ts">
+import { useStarWarsStore } from "~/utils/store";
+
 interface Planet {
   name: string;
   rotation_period: string;
@@ -71,25 +82,6 @@ interface Planet {
   population: string;
   residents: string[];
   films: string[];
-  created: string;
-  edited: string;
-  url: string;
-}
-
-interface Resident {
-  name: string;
-  height: string;
-  mass: string;
-  hair_color: string;
-  skin_color: string;
-  eye_color: string;
-  birth_year: string;
-  gender: string;
-  homeworld: string;
-  films: string[];
-  species: string[];
-  vehicles: string[];
-  starships: string[];
   created: string;
   edited: string;
   url: string;
@@ -118,7 +110,17 @@ const planetInfo = computed(() => {
     : [];
 });
 
-const hasResidents = computed(
-  () => planet?.residents && planet.residents.length > 0
-);
+const planetsStore = useStarWarsStore();
+onMounted(async () => {
+  //console.log("Mounted. Favorites:", await planetsStore.loadFavorites());
+  await planetsStore.loadFavorites();
+});
+const isFavorite = computed(() => {
+  const favorites = planetsStore.favorites;
+  console.log("favorites", favorites);
+  return favorites.some((favPlanet: any) => favPlanet.name === planet?.name);
+});
+const toggleFavorite = () => {
+  planetsStore.toggleFavorite(planet);
+};
 </script>

@@ -48,7 +48,7 @@ export const useStarWarsStore = defineStore("starWars", {
         console.log("Loading state set to false.");
       }
     },
-  
+
     async loadPreviousPage() {
       if (this.currentPage > 1) {
         try {
@@ -61,7 +61,7 @@ export const useStarWarsStore = defineStore("starWars", {
         }
       }
     },
-  
+
     async loadNextPage() {
       if (this.currentPage < this.totalPages) {
         try {
@@ -77,7 +77,10 @@ export const useStarWarsStore = defineStore("starWars", {
     async fetchPlanetDetails(name: any) {
       try {
         this.loading = true;
-        this.selectedPlanet = await swapiService.getPlanetByName(name, this.currentPage);
+        this.selectedPlanet = await swapiService.getPlanetByName(
+          name,
+          this.currentPage
+        );
       } catch (error: any) {
         this.error = error.message || "Failed to fetch planet details";
       } finally {
@@ -126,6 +129,7 @@ export const useStarWarsStore = defineStore("starWars", {
     },
     loadFavorites() {
       const favorites = localStorage.getItem("favorites");
+      //console.log("favorites inside", favorites);
       if (favorites) {
         this.favorites = JSON.parse(favorites);
       }
