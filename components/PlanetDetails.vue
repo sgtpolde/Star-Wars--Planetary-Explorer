@@ -25,7 +25,7 @@ onMounted(async () => {
     const planetName = route.params.name as string;
     // const planetUrl = `https://swapi.dev/api/planets/${planetId}/`;
     await planetsStore.fetchPlanetDetails(planetName);
-    console.log(await planetsStore.fetchPlanetDetails(planetName))
+    //console.log(await planetsStore.fetchPlanetDetails(planetName, 2))
     //await planetsStore.fetchPlanetDetails(planetUrl);
     planet.value = planetsStore.selectedPlanet;
   } catch (error) {

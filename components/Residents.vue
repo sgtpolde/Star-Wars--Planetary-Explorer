@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <!-- Show loading message when data is being fetched -->
     <Loading v-if="loading" />
 
@@ -23,7 +23,9 @@
 
     <!-- Display details for the selected resident -->
     <div v-else class="bg-gray-800 p-4 rounded-lg">
-      <h3 class="text-2xl font-bold mb-4 text-yellow-500">Resident Details | {{ selectedResident.details.name }} </h3>
+      <h3 class="text-2xl font-bold mb-4 text-yellow-500">
+        Resident Details | {{ selectedResident.details.name }}
+      </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <p>
@@ -134,7 +136,7 @@ const selectedResident = ref<any | null>(null);
 onMounted(async () => {
   try {
     loading.value = true; // Set loading state to true before fetching data
-    console.log("Resident URLs:", residents);
+    //console.log("Resident URLs:", residents);
     await planetsStore.fetchResidentDetails(residents);
 
     // Combine resident URL and details for better template readability
@@ -143,7 +145,7 @@ onMounted(async () => {
       details: planetsStore.residentDetails[index],
     }));
 
-    console.log("Details:", residentsWithDetails);
+    //console.log("Details:", residentsWithDetails);
   } catch (error) {
     console.error("Error fetching resident details:", error);
   } finally {

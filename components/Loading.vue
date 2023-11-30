@@ -1,5 +1,7 @@
 <template>
-  <div class="fixed top-0 left-0 w-full h-full bg-black flex items-center justify-center z-50">
+  <div
+    class="fixed top-0 left-0 w-full h-full bg-black flex items-center justify-center z-50"
+  >
     <div class="text-white text-center max-w-2xl w-5/6">
       <h2 class="text-2xl font-bold mb-4">Loading...</h2>
       <p>{{ loadingText }}</p>
@@ -15,7 +17,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onErrorCaptured } from "vue";
 
 export default {
   setup() {
@@ -34,11 +36,14 @@ export default {
 
     const loadingText = ref(loadingTexts[0]);
     const loadingTextIndex = ref(1);
+    const loading = ref(true);
+    const error = ref(null);
 
     const startTextAnimation = () => {
       setInterval(() => {
         loadingText.value = loadingTexts[loadingTextIndex.value];
-        loadingTextIndex.value = (loadingTextIndex.value + 1) % loadingTexts.length;
+        loadingTextIndex.value =
+          (loadingTextIndex.value + 1) % loadingTexts.length;
       }, 3000); // Change text every three seconds, you can adjust the duration
     };
 
@@ -46,8 +51,16 @@ export default {
       startTextAnimation();
     });
 
+    // Handle global errors
+    onErrorCaptured((err) => {
+      loading.value = false;
+      error.value = err;
+    });
+
     return {
       loadingText,
+      loading,
+      error,
     };
   },
 };

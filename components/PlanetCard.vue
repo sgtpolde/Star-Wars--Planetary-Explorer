@@ -120,5 +120,5 @@ interface PlanetCardProps {
 }
 
 const { planet, link, label } = defineProps<PlanetCardProps>();
-console.log("Planet data", planet?.residents);
+//console.log("Planet data", planet?.residents);
 </script>

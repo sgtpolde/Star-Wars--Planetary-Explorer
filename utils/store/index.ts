@@ -27,51 +27,73 @@ export const useStarWarsStore = defineStore("starWars", {
     error: null as string | null,
     favorites: [] as any,
     residentDetails: [] as any[],
+    currentPage: 1,
+    totalPages: 1,
   }),
 
   actions: {
-    async fetchPlanets() {
+    async fetchPlanets(page: number) {
       try {
+        console.log("Fetching planets...");
         this.loading = true;
-        this.planets = await swapiService.getPlanets();
+        const result = await swapiService.getPlanets(page);
+        console.log("Fetched planets result:", result);
+        this.planets = result.results;
+        this.totalPages = Math.ceil(result.count / 10);
+        this.currentPage = page;
       } catch (error: any) {
         this.error = error.message || "Failed to fetch planets";
       } finally {
         this.loading = false;
+        console.log("Loading state set to false.");
       }
     },
-
-    /*async fetchPlanetDetails(url: any) {
-      try {
-        this.loading = true;
-        this.selectedPlanet = await swapiService.getPlanetByUrl(url);
-      } catch (error: any) {
-        this.error = error.message || "Failed to fetch planet details";
-      } finally {
-        this.loading = false;
+  
+    async loadPreviousPage() {
+      if (this.currentPage > 1) {
+        try {
+          this.loading = true;
+          await this.fetchPlanets(this.currentPage - 1);
+        } catch (error) {
+          console.error("Error loading previous page:", error);
+        } finally {
+          this.loading = false;
+        }
       }
     },
-*/
-
+  
+    async loadNextPage() {
+      if (this.currentPage < this.totalPages) {
+        try {
+          this.loading = true;
+          await this.fetchPlanets(this.currentPage + 1);
+        } catch (error) {
+          console.error("Error loading next page:", error);
+        } finally {
+          this.loading = false;
+        }
+      }
+    },
     async fetchPlanetDetails(name: any) {
       try {
         this.loading = true;
-        this.selectedPlanet = await swapiService.getPlanetByName(name);
+        this.selectedPlanet = await swapiService.getPlanetByName(name, this.currentPage);
       } catch (error: any) {
         this.error = error.message || "Failed to fetch planet details";
       } finally {
         this.loading = false;
       }
     },
+
     async fetchResidentDetails(residentUrls: string[]) {
       try {
-        console.log("Fetching resident details for URLs:", residentUrls);
+        //console.log("Fetching resident details for URLs:", residentUrls);
         this.residentDetails = await Promise.all(
           residentUrls.map(async (residentUrl) => {
             try {
-              console.log("Fetching resident details for URL:", residentUrl);
+              //console.log("Fetching resident details for URL:", residentUrl);
               const residentData = await getResidentDetails(residentUrl);
-              console.log("Resident data for", residentUrl, ":", residentData);
+              //console.log("Resident data for", residentUrl, ":", residentData);
               return residentData;
             } catch (error) {
               console.error(
