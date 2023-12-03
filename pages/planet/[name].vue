@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <PlanetDetails />
-  </div>
+  <PlanetDetails />
 </template>
 
 <script setup lang="ts">
-import PlanetDetails from '~/components/PlanetDetails.vue';
+import PlanetDetails from "~/components/PlanetDetails.vue";
 </script>

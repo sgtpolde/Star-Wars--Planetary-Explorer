@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <PlanetList />
-  </div>
+  <PlanetList />
 </template>
 
 <script setup lang="ts">

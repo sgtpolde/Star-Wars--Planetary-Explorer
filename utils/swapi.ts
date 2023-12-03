@@ -5,12 +5,6 @@ const swapi = axios.create({
   baseURL: "https://swapi.dev/api/",
 });
 
-/*export const getPlanets = async () => {
-  const response = await swapi.get("planets/");
-  return response.data.results;
-};
-*/
-
 export const getPlanets = async (page: number) => {
   const response = await swapi.get(`/planets/?page=${page}`);
   //console.log(response);

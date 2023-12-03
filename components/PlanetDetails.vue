@@ -29,4 +29,17 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+useHead(() => ({
+  title: planet.value ? planet.value.name : "Loading...", // Set the title dynamically
+  meta: [
+    {
+      name: "description",
+      content: "Star Wars: Planetary Explorer with Nuxt 3 & Pinia ",
+    },
+  ],
+  bodyAttrs: {
+    class: "test",
+  },
+}));
 </script>

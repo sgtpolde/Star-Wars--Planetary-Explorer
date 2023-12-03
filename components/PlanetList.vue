@@ -135,4 +135,12 @@ const getPageButtonClass = (page: number) => {
     "focus:outline-none": true,
   };
 };
+
+useHead(() => ({
+  title: displayFavorites.value ? "SWPE - Favorite Planets" : "SWPE - All Planets",
+  meta: [{ name: "description", content: "Star Wars: Planetary Explorer with Nuxt 3 & Pinia " }],
+  bodyAttrs: {
+    class: "test",
+  },
+}));
 </script>
