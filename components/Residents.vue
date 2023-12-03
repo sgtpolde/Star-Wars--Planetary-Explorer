@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Loading :error="planetsStore.error" v-if="loading" />
+    <Loading v-if="planetsStore.loading" />
 
     <ul v-else-if="!selectedResident" class="space-y-2">
       <li

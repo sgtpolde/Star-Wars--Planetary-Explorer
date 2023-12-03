@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Loading :error="planetsStore.error" v-show="planetsStore.loading" />
+    <Loading v-show="planetsStore.loading" />
     <div v-show="!planetsStore.loading">
       <div
         class="bg-black text-white p-8 md:p-12 lg:p-16 min-h-screen grid place-content-center"

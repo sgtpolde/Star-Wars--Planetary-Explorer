@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-black">
+  <div
+    class="min-h-screen flex items-center justify-center bg-black overflow-hidden"
+  >
     <div
       class="bg-gray-900 w-full h-3/4 md:w-3/4 lg:w-1/2 text-white p-4 md:p-8 rounded-lg shadow-lg"
     >
@@ -20,7 +22,13 @@
 
       <div
         v-if="planet"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8"
+        :class="[
+          'grid',
+          'gap-4 md:gap-8',
+          !planet.residents.length
+            ? 'w-full lg:w-1/2 mx-auto'
+            : 'md:grid-cols-1 lg:grid-cols-2',
+        ]"
       >
         <!-- Planet Information -->
         <div
@@ -46,7 +54,7 @@
 
         <!-- Residents -->
         <div
-        v-if="planet.residents.length > 0"
+          v-if="planet.residents.length > 0"
           class="border-2 border-green-400 p-4 md:p-6 rounded-lg mb-4 md:mb-8 bg-gradient-to-br from-green-900 to-teal-900"
         >
           <h2 class="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-green-400">

@@ -24,7 +24,7 @@ export const useStarWarsStore = defineStore("starWars", {
     planets: [] as Planet[],
     selectedPlanet: null as Planet | null,
     loading: true,
-    error: null as any | null,
+    error: null as string | null,
     favorites: [] as Planet | any,
     residentDetails: [] as any[],
     currentPage: 1,
@@ -36,16 +36,31 @@ export const useStarWarsStore = defineStore("starWars", {
       try {
         console.log("Fetching planets...");
         this.loading = true;
+
         const result = await swapiService.getPlanets(page);
-        console.log("Fetched planets result:", result);
         this.planets = result.results;
         this.totalPages = Math.ceil(result.count / 10);
         this.currentPage = page;
       } catch (error: any) {
-        this.error = error.message || "Failed to fetch planets";
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          // Set a more meaningful error message
+          this.error = `Failed to fetch planets. Server responded with ${error.response.status} `;
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from the server");
+          this.error =
+            "Failed to fetch planets. No response received from the server";
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          this.error = `Failed to fetch planets. Error: ${error.message}`;
+        }
       } finally {
-        this.loading = false;
-        console.log("Loading state set to false.");
+        if ((await this.error) === null) {
+          //console.log("Loading state set to false.");
+          this.loading = false;
+        }
       }
     },
 
@@ -83,16 +98,31 @@ export const useStarWarsStore = defineStore("starWars", {
           );
         }
       } catch (error: any) {
-        this.error = error.message || "Failed to fetch planet details";
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          // Set a more meaningful error message
+          this.error = `Failed to fetch planet details. Server responded with ${error.response.status} `;
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from the server");
+          this.error =
+            "Failed to fetch planet details. No response received from the server";
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          this.error = `Failed to fetch planet details. Error: ${error.message}`;
+        }
       } finally {
-        this.loading = false;
+        if ((await this.error) === null) {
+          this.loading = false;
+        }
       }
     },
 
     async fetchResidentDetails(residentUrls: string[]) {
       try {
         console.log("Fetching residents details...");
-
+        this.loading = true;
         this.residentDetails = await Promise.all(
           residentUrls.map(async (residentUrl) => {
             try {
@@ -113,9 +143,25 @@ export const useStarWarsStore = defineStore("starWars", {
           })
         );
         //console.log("Final resident details:", this.residentDetails);
-      } catch (error) {
-        console.error("Error fetching resident details:", error);
-        throw error;
+      } catch (error: any) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          // Set a more meaningful error message
+          this.error = `Failed to fetch residents details. Server responded with ${error.response.status} `;
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from the server");
+          this.error =
+            "Failed to fetch residents details. No response received from the server";
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          this.error = `Failed to fetch residents details. Error: ${error.message}`;
+        }
+      } finally {
+        if ((await this.error) === null) {
+          this.loading = false;
+        }
       }
     },
 
@@ -152,7 +198,10 @@ export const useStarWarsStore = defineStore("starWars", {
         } catch (error) {
           console.error("Error loading previous page:", error);
         } finally {
-          this.loading = false;
+          if ((await this.error) === null) {
+            console.log("Loading state set to false.");
+            this.loading = false;
+          }
         }
       }
     },
@@ -165,7 +214,10 @@ export const useStarWarsStore = defineStore("starWars", {
         } catch (error) {
           console.error("Error loading next page:", error);
         } finally {
-          this.loading = false;
+          if ((await this.error) === null) {
+            console.log("Loading state set to false.");
+            this.loading = false;
+          }
         }
       }
     },

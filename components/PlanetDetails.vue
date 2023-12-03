@@ -1,6 +1,5 @@
 <template>
-  <Loading :error="planetsStore.error" v-if="loading" />
-
+  <Loading v-if="loading" />
   <template v-else>
     <PlanetCard :planet="planet" :label="'Back to Planet List'" :link="'/'" />
   </template>
