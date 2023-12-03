@@ -46,6 +46,7 @@
 
         <!-- Residents -->
         <div
+        v-if="planet.residents.length > 0"
           class="border-2 border-green-400 p-4 md:p-6 rounded-lg mb-4 md:mb-8 bg-gradient-to-br from-green-900 to-teal-900"
         >
           <h2 class="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-green-400">
@@ -69,6 +70,7 @@
 
 <script setup lang="ts">
 import { useStarWarsStore } from "~/utils/store";
+const planetsStore = useStarWarsStore();
 
 interface Planet {
   name: string;
@@ -99,25 +101,29 @@ const planetInfo = computed(() => {
   return planet
     ? [
         { label: "Climate", value: planet.climate },
-        { label: "Rotation Period", value: planet.rotation_period },
-        { label: "Orbital Period", value: planet.orbital_period },
-        { label: "Diameter", value: planet.diameter },
+        {
+          label: "Rotation Period",
+          value: planet.rotation_period + " " + "hours",
+        },
+        {
+          label: "Orbital Period",
+          value: planet.orbital_period + " " + "days",
+        },
+        { label: "Diameter", value: planet.diameter + " " + "km" },
         { label: "Gravity", value: planet.gravity },
         { label: "Terrain", value: planet.terrain },
         { label: "Surface Water", value: planet.surface_water },
-        { label: "Population", value: planet.population },
+        {
+          label: "Population",
+          value: planetsStore.formatNumber(planet.population),
+        },
       ]
     : [];
 });
 
-const planetsStore = useStarWarsStore();
-onMounted(async () => {
-  //console.log("Mounted. Favorites:", await planetsStore.loadFavorites());
-  await planetsStore.loadFavorites();
-});
 const isFavorite = computed(() => {
   const favorites = planetsStore.favorites;
-  console.log("favorites", favorites);
+  //console.log("favorites", favorites);
   return favorites.some((favPlanet: any) => favPlanet.name === planet?.name);
 });
 const toggleFavorite = () => {

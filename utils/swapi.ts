@@ -18,18 +18,18 @@ export const getPlanets = async (page: number) => {
   return data;
 };
 
-export async function getPlanetByUrl(url: string) {
+export const getPlanetByUrl = async (url: string) => {
   const response = await axios.get(url);
   return await response.data;
-}
+};
 
-export async function getPlanetByName(name: string, page: number) {
+export const getPlanetByName = async (name: string, page: number) => {
   const { results } = await getPlanets(page);
   //console.log("results: ", results);
   return results.find(
     (planet: any) => planet.name.toLowerCase() === name.toLowerCase()
   );
-}
+};
 
 export const getResidentDetails = async (url: string) => {
   try {

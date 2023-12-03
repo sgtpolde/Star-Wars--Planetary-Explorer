@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <Loading v-if="loading" />
-    <template v-else>
-      <PlanetCard :planet="planet" :label="'Back to Planet List'" :link="'/'" />
-    </template>
-  </div>
+  <Loading :error="planetsStore.error" v-if="loading" />
+
+  <template v-else>
+    <PlanetCard :planet="planet" :label="'Back to Planet List'" :link="'/'" />
+  </template>
 </template>
 
 <script setup lang="ts">

@@ -13,6 +13,10 @@
         </div>
       </div>
     </div>
+
+    <div v-if="error" class="text-red-500 mt-4">
+      <p>An error occurred: {{ error.message }}</p>
+    </div>
   </div>
 </template>
 
@@ -40,11 +44,14 @@ export default {
     const error = ref(null);
 
     const startTextAnimation = () => {
-      setInterval(() => {
+      const updateText = () => {
         loadingText.value = loadingTexts[loadingTextIndex.value];
         loadingTextIndex.value =
           (loadingTextIndex.value + 1) % loadingTexts.length;
-      }, 3000); // Change text every three seconds, you can adjust the duration
+        setTimeout(updateText, 3000); // Change text every three seconds
+      };
+
+      updateText(); // Change text every three seconds, you can adjust the duration
     };
 
     onMounted(() => {
@@ -53,8 +60,9 @@ export default {
 
     // Handle global errors
     onErrorCaptured((err) => {
-      loading.value = false;
+      console.error("Global error captured:", err);
       error.value = err;
+      loading.value = true;
     });
 
     return {
