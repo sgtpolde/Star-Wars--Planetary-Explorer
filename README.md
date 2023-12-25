@@ -25,7 +25,6 @@
     - [🤖 Running Star-Wars--Planetary-Explorer](#-running-Star-Wars--Planetary-Explorer)
 - [🛣 Roadmap](#-roadmap)
 - [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
 - [👏 Acknowledgments](#-acknowledgments)
 
 ---
